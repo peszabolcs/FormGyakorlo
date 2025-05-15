@@ -39,8 +39,8 @@ const summaryPageRoute = new Route({
 //route tree
 const routeTree = rootRoute.addChildren([
   formPage1Route,
-  // formPage2Route,
-  // summaryPageRoute,
+  formPage2Route,
+  summaryPageRoute,
 ]);
 
 //router instance
