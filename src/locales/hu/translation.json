@@ -1,0 +1,37 @@
+{
+  "form": {
+    "title": "Kár részletei",
+    "deviceNumber": "Eszközszám",
+    "insuranceNumber": "Biztosítási szám",
+    "city": "Lakhely",
+    "birthDate": "Születési dátum",
+    "buttons": {
+      "back": "Vissza",
+      "next": "Tovább",
+      "submit": "Véglegesítés"
+    },
+    "page1": {
+      "title": "Alap adatok",
+      "name": "Név",
+      "email": "Email",
+      "phone": "Telefonszám"
+    },
+    "summary": {
+      "title": "Összegzés",
+      "name": "Név",
+      "email": "Email",
+      "phone": "Telefonszám",
+      "deviceNumber": "Eszközszám",
+      "insuranceNumber": "Biztosítási szám",
+      "city": "Lakhely",
+      "birthDate": "Születési dátum",
+      "successMessage": "Kárbejelentés elküldve!"
+    }
+  },
+  "validation": {
+    "required": "{{field}} megadása kötelező",
+    "invalidFormat": "Érvénytelen {{field}} formátum",
+    "minLength": "{{field}} legalább {{min}} karakter hosszú kell legyen",
+    "maxLength": "{{field}} legfeljebb {{max}} karakter hosszú lehet"
+  }
+}

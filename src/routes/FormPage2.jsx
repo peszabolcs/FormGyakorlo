@@ -11,6 +11,7 @@ import { LocationCity, Devices, Numbers } from "@mui/icons-material";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { useRouter } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
 import {
   FORM_QUERY_KEY,
   queryClient,
@@ -19,6 +20,7 @@ import {
 import "../App.css";
 
 function FormPage2() {
+  const { t } = useTranslation();
   const formData = queryClient.getQueryData(FORM_QUERY_KEY) || {};
   const router = useRouter();
   const formik = useFormik({
@@ -64,7 +66,7 @@ function FormPage2() {
       >
         <LocationCity sx={{ mr: 1 }} />
         <Typography variant="h5" align="center" fontWeight={700}>
-          Kár részletei
+          {t("form.title")}
         </Typography>
       </Box>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -74,7 +76,7 @@ function FormPage2() {
             margin="normal"
             id="deviceNumber"
             name="deviceNumber"
-            label="Eszközszám"
+            label={t("form.deviceNumber")}
             variant="outlined"
             value={formik.values.deviceNumber}
             onChange={formik.handleChange}
@@ -98,7 +100,7 @@ function FormPage2() {
             margin="normal"
             id="insuranceNumber"
             name="insuranceNumber"
-            label="Biztosítási szám"
+            label={t("form.insuranceNumber")}
             variant="outlined"
             value={formik.values.insuranceNumber}
             onChange={formik.handleChange}
@@ -123,7 +125,7 @@ function FormPage2() {
             margin="normal"
             id="city"
             name="city"
-            label="Lakhely"
+            label={t("form.city")}
             variant="outlined"
             value={formik.values.city}
             onChange={formik.handleChange}
@@ -139,7 +141,7 @@ function FormPage2() {
             }}
           />
           <DatePicker
-            label="Születési dátum"
+            label={t("form.birthDate")}
             value={formik.values.birthDate}
             onChange={(value) => formik.setFieldValue("birthDate", value)}
             onBlur={formik.handleBlur}
@@ -176,7 +178,7 @@ function FormPage2() {
                 router.navigate({ to: "/" });
               }}
             >
-              Vissza
+              {t("form.buttons.back")}
             </Button>
             <Button
               type="submit"
@@ -185,7 +187,7 @@ function FormPage2() {
               size="large"
               className="fancy-btn"
             >
-              Tovább
+              {t("form.buttons.next")}
             </Button>
           </Box>
         </form>

@@ -1,0 +1,37 @@
+{
+  "form": {
+    "title": "Claim Details",
+    "deviceNumber": "Device Number",
+    "insuranceNumber": "Insurance Number",
+    "city": "City",
+    "birthDate": "Date of Birth",
+    "buttons": {
+      "back": "Back",
+      "next": "Next",
+      "submit": "Submit"
+    },
+    "page1": {
+      "title": "Basic Information",
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone Number"
+    },
+    "summary": {
+      "title": "Summary",
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone Number",
+      "deviceNumber": "Device Number",
+      "insuranceNumber": "Insurance Number",
+      "city": "City",
+      "birthDate": "Date of Birth",
+      "successMessage": "Claim submitted successfully!"
+    }
+  },
+  "validation": {
+    "required": "{{field}} is required",
+    "invalidFormat": "Invalid {{field}} format",
+    "minLength": "{{field}} must be at least {{min}} characters long",
+    "maxLength": "{{field}} must not exceed {{max}} characters"
+  }
+}

@@ -11,6 +11,7 @@ import {
   RootRoute,
   Route,
 } from "@tanstack/react-router";
+import "./i18n";
 
 //root route
 const rootRoute = new RootRoute({

@@ -2,13 +2,19 @@ import { Box, Button, Typography } from "@mui/material";
 // import { useNavigate } from "react-router-dom";
 import { FORM_QUERY_KEY, queryClient } from "../formConfig";
 import { useRouter } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
 import "../App.css";
 
 function SummaryPage() {
+  const { t } = useTranslation();
   const formData = queryClient.getQueryData(FORM_QUERY_KEY) || {};
   const router = useRouter();
   const handleSubmit = () => {
-    alert("Kárbejelentés elküldve!\n" + JSON.stringify(formData, null, 2));
+    alert(
+      t("form.summary.successMessage") +
+        "\n" +
+        JSON.stringify(formData, null, 2)
+    );
     queryClient.removeQueries(FORM_QUERY_KEY);
     router.navigate({ to: "/" });
   };
@@ -41,49 +47,49 @@ function SummaryPage() {
         }}
       >
         <Typography variant="h5" align="center" fontWeight={700}>
-          Összegzés
+          {t("form.summary.title")}
         </Typography>
       </Box>
       <Box component="dl" sx={{ mb: 2, px: 1 }}>
         <Box className="summary-row">
           <Typography component="dt" fontWeight="bold" color="primary.main">
-            Név:
+            {t("form.summary.name")}:
           </Typography>
           <Typography component="dd">{formData.name}</Typography>
         </Box>
         <Box className="summary-row">
           <Typography component="dt" fontWeight="bold" color="primary.main">
-            Email:
+            {t("form.summary.email")}:
           </Typography>
           <Typography component="dd">{formData.email}</Typography>
         </Box>
         <Box className="summary-row">
           <Typography component="dt" fontWeight="bold" color="primary.main">
-            Telefonszám:
+            {t("form.summary.phone")}:
           </Typography>
           <Typography component="dd">{formData.phone}</Typography>
         </Box>
         <Box className="summary-row">
           <Typography component="dt" fontWeight="bold" color="primary.main">
-            Eszközszám:
+            {t("form.summary.deviceNumber")}:
           </Typography>
           <Typography component="dd">{formData.deviceNumber}</Typography>
         </Box>
         <Box className="summary-row">
           <Typography component="dt" fontWeight="bold" color="primary.main">
-            Biztosítási szám:
+            {t("form.summary.insuranceNumber")}:
           </Typography>
           <Typography component="dd">{formData.insuranceNumber}</Typography>
         </Box>
         <Box className="summary-row">
           <Typography component="dt" fontWeight="bold" color="primary.main">
-            Lakhely:
+            {t("form.summary.city")}:
           </Typography>
           <Typography component="dd">{formData.city}</Typography>
         </Box>
         <Box className="summary-row">
           <Typography component="dt" fontWeight="bold" color="primary.main">
-            Születési dátum:
+            {t("form.summary.birthDate")}:
           </Typography>
           <Typography component="dd">
             {formData.birthDate
@@ -100,7 +106,7 @@ function SummaryPage() {
           className="fancy-btn"
           onClick={() => router.navigate({ to: "/step2" })}
         >
-          Vissza
+          {t("form.buttons.back")}
         </Button>
         <Button
           variant="contained"
@@ -109,7 +115,7 @@ function SummaryPage() {
           className="fancy-btn"
           onClick={handleSubmit}
         >
-          Véglegesítés
+          {t("form.buttons.submit")}
         </Button>
       </Box>
     </Box>

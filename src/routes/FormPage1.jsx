@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import { Email, Phone, Numbers, Devices } from "@mui/icons-material";
 import { useRouter } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
 import {
   FORM_QUERY_KEY,
   queryClient,
@@ -17,6 +18,7 @@ import {
 import "../App.css";
 
 function FormPage1() {
+  const { t } = useTranslation();
   const formData = queryClient.getQueryData(FORM_QUERY_KEY) || {};
   const router = useRouter();
   const formik = useFormik({
@@ -61,7 +63,7 @@ function FormPage1() {
       >
         <Devices sx={{ mr: 1 }} />
         <Typography variant="h5" align="center" fontWeight={700}>
-          Alap adatok
+          {t("form.page1.title")}
         </Typography>
       </Box>
       <form onSubmit={formik.handleSubmit} noValidate>
@@ -70,7 +72,7 @@ function FormPage1() {
           margin="normal"
           id="name"
           name="name"
-          label="Név"
+          label={t("form.page1.name")}
           variant="outlined"
           value={formik.values.name}
           onChange={formik.handleChange}
@@ -90,7 +92,7 @@ function FormPage1() {
           margin="normal"
           id="email"
           name="email"
-          label="Email"
+          label={t("form.page1.email")}
           variant="outlined"
           value={formik.values.email}
           onChange={formik.handleChange}
@@ -110,7 +112,7 @@ function FormPage1() {
           margin="normal"
           id="phone"
           name="phone"
-          label="Telefonszám"
+          label={t("form.page1.phone")}
           variant="outlined"
           value={formik.values.phone}
           onChange={formik.handleChange}
@@ -134,7 +136,7 @@ function FormPage1() {
             size="large"
             className="fancy-btn"
           >
-            Tovább
+            {t("form.buttons.next")}
           </Button>
         </Box>
       </form>
