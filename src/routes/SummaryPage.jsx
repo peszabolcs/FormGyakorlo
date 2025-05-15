@@ -1,8 +1,8 @@
 import { Box, Button, Typography } from "@mui/material";
 // import { useNavigate } from "react-router-dom";
-import { FORM_QUERY_KEY, queryClient } from "./formConfig";
+import { FORM_QUERY_KEY, queryClient } from "../formConfig";
 import { useRouter } from "@tanstack/react-router";
-import "./App.css";
+import "../App.css";
 
 function SummaryPage() {
   const formData = queryClient.getQueryData(FORM_QUERY_KEY) || {};

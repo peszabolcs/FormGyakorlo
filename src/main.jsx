@@ -2,9 +2,9 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.jsx";
-import FormPage1 from "./FormPage1";
-import FormPage2 from "./FormPage2";
-import SummaryPage from "./SummaryPage";
+import FormPage1 from "./routes/FormPage1";
+import FormPage2 from "./routes/FormPage2";
+import SummaryPage from "./routes/SummaryPage";
 import {
   RouterProvider,
   createRouter,

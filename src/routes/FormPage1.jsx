@@ -9,13 +9,12 @@ import {
 } from "@mui/material";
 import { Email, Phone, Numbers, Devices } from "@mui/icons-material";
 import { useRouter } from "@tanstack/react-router";
-// import { useNavigate } from "react-router-dom";
 import {
   FORM_QUERY_KEY,
   queryClient,
   page1ValidationSchema,
-} from "./formConfig";
-import "./App.css";
+} from "../formConfig";
+import "../App.css";
 
 function FormPage1() {
   const formData = queryClient.getQueryData(FORM_QUERY_KEY) || {};

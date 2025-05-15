@@ -24,8 +24,8 @@ import {
   FORM_QUERY_KEY,
   queryClient,
   page2ValidationSchema,
-} from "./formConfig";
-import "./App.css";
+} from "../formConfig";
+import "../App.css";
 
 function FormPage2() {
   const formData = queryClient.getQueryData(FORM_QUERY_KEY) || {};
