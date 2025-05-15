@@ -1,72 +1,72 @@
-# Biztosítási kárbejelentő űrlap – többoldalas, adatmegjegyzős, modern stack
+# Biztosítási kárbejelentő űrlap – Többoldalas, adatmegjegyzős, modern React stack
 
-Ez a projekt egy többoldalas, adatmegjegyzős biztosítási kárbejelentő űrlap, amely a következő technológiákat használja:
+Ez a projekt egy többoldalas, adatmegjegyzős biztosítási kárbejelentő űrlap, amely a legmodernebb React ökoszisztéma eszközeit használja. A cél: UX szempontból kényelmes, validált, reszponzív, bővíthető űrlap.
 
-- **Formik**: űrlapkezelés, állapot és validáció kezelése
-- **Zod**: sémalapú validáció, típusbiztonság
-- **zod-formik-adapter**: Zod sémák egyszerű bekötése Formik validációhoz
-- **Material UI (MUI)**: professzionális, reszponzív UI komponensek
-- **@mui/icons-material**: ikonok az input mezőkben
-- **@mui/x-date-pickers**: dátumválasztó (DatePicker)
-- **date-fns, dayjs**: dátumkezelés, a DatePicker működéséhez
-- **@tanstack/react-query**: globális state, form adatok megőrzése oldalváltáskor
-- **@tanstack/react-router**: többoldalas navigáció, oda-vissza lépkedés
+## Használt technológiák és fő funkciók
 
-## Főbb működési elvek
+### React
 
-### 1. Többoldalas űrlap (TanStack Router)
+- **Funkcionális komponensek**: Minden oldal, logika és UI komponens funkcionális React komponensként készült.
+- **Hooks**: Állapotkezeléshez, navigációhoz, űrlapokhoz.
 
-- Minden oldal egy külön React komponens:
-  - **FormPage1**: Alap adatok (név, email, telefonszám)
-  - **FormPage2**: Kár részletei (eszközszám, biztosítási szám, lakhely, jelszó, születési dátum)
-  - **SummaryPage**: Összegzés, véglegesítés
-- A router biztosítja az oda-vissza lépkedést (`navigate({ to: '/step2' })`, `navigate({ to: '/' })`).
+### React Router (react-router-dom)
 
-### 2. Adatmegjegyzés (TanStack React Query)
+- **Többoldalas navigáció**: Minden űrlapoldal külön route-on érhető el (`/`, `/step2`, `/summary`).
+- **Oda-vissza lépkedés**: A felhasználó bármikor visszaléphet, az adatok nem vesznek el.
 
-- A form adatait a QueryClient-ben tároljuk (`setQueryData`, `getQueryData`).
-- Ha visszalépsz, a mezők értékei megmaradnak, nem kell újra beírni.
-- A véglegesítés után a `removeQueries` törli az adatokat.
+### @tanstack/react-query
 
-### 3. Validáció (Formik + Zod)
+- **Globális state**: Az űrlap minden adatát a QueryClient-ben tároljuk, így oldalváltáskor, visszalépéskor is megmaradnak.
+- **Adatmegjegyzés**: A form adatai a memóriában élnek, véglegesítés után törlődnek.
 
-- Minden oldalon csak az adott mezők validációja fut le.
-- A Zod séma minden mezőhöz pontos szabályokat ad.
-- A hibák csak akkor jelennek meg, ha a mezőre már rákattintottál és elhagytad (onBlur).
+### Formik
 
-### 4. Material UI
+- **Űrlapkezelés**: Minden oldal külön Formik példányt használ, csak az adott mezőkkel.
+- **onBlur validáció**: A hibák csak akkor jelennek meg, ha a mezőre már rákattintottál és elhagytad.
+- **onSubmit**: Az adatok mentése és navigáció a következő oldalra.
 
-- Minden mezőhöz MUI `TextField`, `Button`, ikonok, DatePicker.
-- A layout reszponzív, letisztult.
-- Jelszó mezőhöz mutatás/elrejtés funkció is tartozik.
+### Zod & zod-formik-adapter
 
-### 5. Dátumkezelés (DatePicker)
+- **Sémalapú validáció**: Minden oldalhoz külön Zod séma tartozik, pontos szabályokkal.
+- **Formik integráció**: A `toFormikValidationSchema` adapterrel a Zod séma közvetlenül használható Formik validációhoz.
+- **Típusbiztonság**: A validációk típushelyesek, könnyen bővíthetők.
 
-- A `LocalizationProvider` és a `DatePicker` segítségével születési dátum mezőt is kezelünk.
-- Ehhez a `date-fns` vagy `dayjs` csomag szükséges (a példában az AdapterDateFns van használva).
-- A dátum validációját a Zod séma végzi, a Formik pedig a hibákat kezeli.
+### Material UI (MUI) & @mui/icons-material
 
-## Kód fő részei
+- **Professzionális, reszponzív UI**: Minden mező, gomb, layout MUI komponens.
+- **Ikonok**: Az input mezőkben vizuális ikonok segítik a kitöltést.
+- **Modern, letisztult design**: Árnyékos, lekerekített kártyák, színes fejlécek, animált gombok.
+- **Reszponzív elrendezés**: Mobilon is jól használható.
 
-- **App.jsx**: router, query, oldalak, form state, validáció, MUI layout
-  - **FormPage1**: első oldal, alap adatok, tovább gomb
-  - **FormPage2**: második oldal, kár részletei, vissza/tovább gomb
-  - **SummaryPage**: összegzés, vissza/véglegesítés gomb
-- **README.md**: részletes magyarázat minden fő technológiáról és működésről
+### @mui/x-date-pickers & date-fns
 
-## Főbb funkciók, hogyan működik
+- **DatePicker**: A születési dátumhoz modern dátumválasztó.
+- **LocalizationProvider**: A dátumkezeléshez szükséges provider, AdapterDateFns-szel.
+- **Dátum validáció**: A Zod séma gondoskodik a helyes dátumról.
 
-- **Oda-vissza lépkedés**: A TanStack Router segítségével bármelyik oldalra vissza lehet lépni, az adatok nem vesznek el.
-- **Adatmegjegyzés**: A TanStack Query globális state-ben tárolja az űrlap minden adatát, így visszalépéskor is megmaradnak.
-- **Validáció**: Minden oldalon csak az aktuális mezők validációja fut le, Zod sémával, Formik integrációval.
-- **Modern UI**: Minden mező Material UI komponens, ikonokkal, DatePicker-rel, jelszó mutatás/elrejtés funkcióval.
-- **Véglegesítés**: Az összegző oldalon egy gombbal véglegesíthető a kárbejelentés, ekkor az adatok törlődnek.
+### Fájlstruktúra és komponensek
+
+- **App.jsx**: Csak a router, QueryClientProvider, fő layout. Átlátható, minden oldal külön komponens.
+- **formConfig.js**: Közös konfigok (query kulcs, queryClient, validációs sémák).
+- **FormPage1.jsx**: Első oldal (név, email, telefonszám). Validáció, ikonok, tovább gomb.
+- **FormPage2.jsx**: Második oldal (eszközszám, biztosítási szám, lakhely, jelszó, születési dátum). Validáció, ikonok, jelszó mutatás/elrejtés, vissza/tovább gomb.
+- **SummaryPage.jsx**: Összegző oldal, minden adat listázása, vissza/véglegesítés gomb.
+- **App.css**: Modern, színes, reszponzív stílusok, kártyák, gombok, fejlécek, összegzés.
+
+## Működés részletesen
+
+1. **Többoldalas űrlap**: A felhasználó lépésről lépésre tölti ki az adatokat. Minden oldal külön validációval, csak az aktuális mezőkre.
+2. **Adatmegjegyzés**: Az adatok a memóriában (QueryClient) élnek, így visszalépéskor is megmaradnak. Véglegesítés után törlődnek.
+3. **Validáció**: Zod sémák gondoskodnak a pontos, típushelyes validációról. A hibák csak akkor jelennek meg, ha a mezőre már rákattintottál és elhagytad.
+4. **Modern UI**: Minden mezőhöz ikon, a jelszó mezőhöz mutatás/elrejtés, a születési dátumhoz DatePicker tartozik. A layout reszponzív, letisztult, színes.
+5. **Véglegesítés**: Az összegző oldalon egy gombbal véglegesíthető a kárbejelentés, ekkor az adatok törlődnek a memóriából.
 
 ## Bővítési lehetőségek
 
-- További oldalak, mezők, validációk, MUI komponensek könnyen hozzáadhatók.
+- Új oldalak, mezők, validációk, MUI komponensek könnyen hozzáadhatók.
 - A DatePicker integrálható más dátum típusú mezőkhöz is.
+- Az adatkezelés (QueryClient) könnyen cserélhető API-hívásra, ha szerveres mentés szükséges.
 
 ---
 
-Ha kérdésed van a működésről, vagy szeretnéd bővíteni az űrlapot, nézd meg az `App.jsx`-ben a részletes kommenteket, vagy kérdezz bátran!
+Ha kérdésed van a működésről, vagy szeretnéd bővíteni az űrlapot, nézd meg a komponensekben a részletes kommenteket, vagy kérdezz bátran!
