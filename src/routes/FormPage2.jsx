@@ -6,20 +6,11 @@ import {
   TextField,
   Typography,
   InputAdornment,
-  IconButton,
 } from "@mui/material";
-import {
-  Visibility,
-  VisibilityOff,
-  LocationCity,
-  Devices,
-  Numbers,
-} from "@mui/icons-material";
+import { LocationCity, Devices, Numbers } from "@mui/icons-material";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { useState } from "react";
 import { useRouter } from "@tanstack/react-router";
-// import { useNavigate } from "react-router-dom";
 import {
   FORM_QUERY_KEY,
   queryClient,
@@ -30,13 +21,11 @@ import "../App.css";
 function FormPage2() {
   const formData = queryClient.getQueryData(FORM_QUERY_KEY) || {};
   const router = useRouter();
-  const [showPassword, setShowPassword] = useState(false);
   const formik = useFormik({
     initialValues: {
       deviceNumber: formData.deviceNumber || "",
       insuranceNumber: formData.insuranceNumber || "",
       city: formData.city || "",
-      password: formData.password || "",
       birthDate: formData.birthDate || null,
     },
     validationSchema: toFormikValidationSchema(page2ValidationSchema),
@@ -145,38 +134,6 @@ function FormPage2() {
               startAdornment: (
                 <InputAdornment position="start">
                   <LocationCity />
-                </InputAdornment>
-              ),
-            }}
-          />
-          <TextField
-            fullWidth
-            margin="normal"
-            id="password"
-            name="password"
-            label="Jelszó"
-            type={showPassword ? "text" : "password"}
-            variant="outlined"
-            value={formik.values.password}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.password && Boolean(formik.errors.password)}
-            helperText={formik.touched.password && formik.errors.password}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <Visibility />
-                </InputAdornment>
-              ),
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="jelszó mutatása/elrejtése"
-                    onClick={() => setShowPassword((show) => !show)}
-                    edge="end"
-                  >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
                 </InputAdornment>
               ),
             }}
