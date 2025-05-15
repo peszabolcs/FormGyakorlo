@@ -44,6 +44,29 @@ Ez a projekt egy többoldalas, adatmegjegyzős biztosítási kárbejelentő űrl
 - **LocalizationProvider**: A dátumkezeléshez szükséges provider, AdapterDateFns-szel.
 - **Dátum validáció**: A Zod séma gondoskodik a helyes dátumról.
 
+### ESLint
+
+- **Kódminőség**: Statikus kódelemző eszköz a kód minőségének és konzisztenciájának fenntartásához.
+- **Best practice-ek**: React és React Hooks best practice-ek betartatása.
+- **Hibaelhárítás**: Potenciális problémák automatikus felismerése fejlesztés közben.
+- **Konfiguráció**: `.eslintrc.json` fájlban definiált szabályok és beállítások.
+
+### Axios
+
+- **API Kommunikáció**: Promise-alapú HTTP kliens a szerveres kommunikációhoz.
+- **Központosított konfiguráció**: Egységes API hívások az alkalmazásban.
+- **Hibakezelés**: Automatikus hibaellenőrzés és logolás interceptors segítségével.
+- **Időtúllépés**: Automatikus timeout kezelés a hosszú futású kéréseknél.
+- **Környezetfüggő beállítások**: Különböző API végpontok különböző környezetekben.
+
+### Zustand
+
+- **Állapotkezelés**: Könnyű súlyú state management megoldás.
+- **Egyszerű API**: Minimális boilerplate kód a state kezeléshez.
+- **Teljesítmény**: Hatékonyabb mint a Context API.
+- **DevTools**: Integrált fejlesztői eszközök a debugging-hoz.
+- **TypeScript**: Beépített típusbiztonság.
+
 ### Fájlstruktúra és komponensek
 
 - **App.jsx**: Csak a router, QueryClientProvider, fő layout. Átlátható, minden oldal külön komponens.
@@ -52,6 +75,8 @@ Ez a projekt egy többoldalas, adatmegjegyzős biztosítási kárbejelentő űrl
 - **FormPage2.jsx**: Második oldal (eszközszám, biztosítási szám, lakhely, jelszó, születési dátum). Validáció, ikonok, jelszó mutatás/elrejtés, vissza/tovább gomb.
 - **SummaryPage.jsx**: Összegző oldal, minden adat listázása, vissza/véglegesítés gomb.
 - **App.css**: Modern, színes, reszponzív stílusok, kártyák, gombok, fejlécek, összegzés.
+- **lib/axios.js**: Axios konfiguráció és interceptors.
+- **store/formStore.js**: Zustand store a form állapot kezeléséhez.
 
 ## Működés részletesen
 
@@ -60,12 +85,18 @@ Ez a projekt egy többoldalas, adatmegjegyzős biztosítási kárbejelentő űrl
 3. **Validáció**: Zod sémák gondoskodnak a pontos, típushelyes validációról. A hibák csak akkor jelennek meg, ha a mezőre már rákattintottál és elhagytad.
 4. **Modern UI**: Minden mezőhöz ikon, a jelszó mezőhöz mutatás/elrejtés, a születési dátumhoz DatePicker tartozik. A layout reszponzív, letisztult, színes.
 5. **Véglegesítés**: Az összegző oldalon egy gombbal véglegesíthető a kárbejelentés, ekkor az adatok törlődnek a memóriából.
+6. **API Kommunikáció**: Axios kezeli a szerveres kommunikációt, egységes hibakezeléssel és timeout kezeléssel.
+7. **Állapotkezelés**: Zustand biztosítja az egyszerű és hatékony state managementet a komponensek között.
+8. **Kódminőség**: ESLint segít fenntartani a kód minőségét és konzisztenciáját.
 
 ## Bővítési lehetőségek
 
 - Új oldalak, mezők, validációk, MUI komponensek könnyen hozzáadhatók.
 - A DatePicker integrálható más dátum típusú mezőkhöz is.
 - Az adatkezelés (QueryClient) könnyen cserélhető API-hívásra, ha szerveres mentés szükséges.
+- i18next hozzáadható a többnyelvűség támogatásához.
+- TypeScript támogatás hozzáadható a jobb típusbiztonságért.
+- Unit tesztek írhatók a komponensek teszteléséhez.
 
 ---
 
