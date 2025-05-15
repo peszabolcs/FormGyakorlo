@@ -19,9 +19,14 @@ import "../App.css";
 
 function FormPage1() {
   const { t } = useTranslation();
-  const formData = queryClient.getQueryData(FORM_QUERY_KEY) || {};
+  const formData =
+    (queryClient.getQueryData(FORM_QUERY_KEY) as Record<string, any>) || {};
   const router = useRouter();
-  const formik = useFormik({
+  const formik = useFormik<{
+    name: string;
+    email: string;
+    phone: string;
+  }>({
     initialValues: {
       name: formData.name || "",
       email: formData.email || "",

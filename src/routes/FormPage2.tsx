@@ -21,14 +21,20 @@ import "../App.css";
 
 function FormPage2() {
   const { t } = useTranslation();
-  const formData = queryClient.getQueryData(FORM_QUERY_KEY) || {};
+  const formData =
+    (queryClient.getQueryData(FORM_QUERY_KEY) as Record<string, any>) || {};
   const router = useRouter();
-  const formik = useFormik({
+  const formik = useFormik<{
+    deviceNumber: string;
+    insuranceNumber: string;
+    city: string;
+    birthDate: Date | null;
+  }>({
     initialValues: {
       deviceNumber: formData.deviceNumber || "",
       insuranceNumber: formData.insuranceNumber || "",
       city: formData.city || "",
-      birthDate: formData.birthDate || null,
+      birthDate: formData.birthDate ? new Date(formData.birthDate) : null,
     },
     validationSchema: toFormikValidationSchema(page2ValidationSchema),
     onSubmit: (values) => {
@@ -144,7 +150,6 @@ function FormPage2() {
             label={t("form.birthDate")}
             value={formik.values.birthDate}
             onChange={(value) => formik.setFieldValue("birthDate", value)}
-            onBlur={formik.handleBlur}
             slotProps={{
               textField: {
                 fullWidth: true,
@@ -161,6 +166,7 @@ function FormPage2() {
                     </InputAdornment>
                   ),
                 },
+                onBlur: formik.handleBlur,
               },
             }}
           />

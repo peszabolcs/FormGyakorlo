@@ -7,7 +7,8 @@ import "../App.css";
 
 function SummaryPage() {
   const { t } = useTranslation();
-  const formData = queryClient.getQueryData(FORM_QUERY_KEY) || {};
+  const formData =
+    (queryClient.getQueryData(FORM_QUERY_KEY) as Record<string, any>) || {};
   const router = useRouter();
   const handleSubmit = () => {
     alert(

@@ -1,13 +1,29 @@
 import { create } from "zustand";
 
-const useFormStore = create((set) => ({
-  // Form data
+export interface Step1Data {
+  [key: string]: any;
+}
+export interface Step2Data {
+  [key: string]: any;
+}
+export interface FormData {
+  step1: Step1Data;
+  step2: Step2Data;
+}
+
+interface FormStore {
+  formData: FormData;
+  setStep1Data: (data: Step1Data) => void;
+  setStep2Data: (data: Step2Data) => void;
+  resetForm: () => void;
+  getAllFormData: () => FormData;
+}
+
+const useFormStore = create<FormStore>((set, get) => ({
   formData: {
     step1: {},
     step2: {},
   },
-
-  // Actions
   setStep1Data: (data) =>
     set((state) => ({
       formData: {
@@ -15,7 +31,6 @@ const useFormStore = create((set) => ({
         step1: data,
       },
     })),
-
   setStep2Data: (data) =>
     set((state) => ({
       formData: {
@@ -23,8 +38,6 @@ const useFormStore = create((set) => ({
         step2: data,
       },
     })),
-
-  // Reset form data
   resetForm: () =>
     set({
       formData: {
@@ -32,11 +45,8 @@ const useFormStore = create((set) => ({
         step2: {},
       },
     }),
-
-  // Get all form data
   getAllFormData: () => {
-    const state = useFormStore.getState();
-    return state.formData;
+    return get().formData;
   },
 }));
 

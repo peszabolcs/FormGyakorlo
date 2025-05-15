@@ -1,7 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
-import App from "./App.jsx";
+import App from "./App";
 import FormPage1 from "./routes/FormPage1";
 import FormPage2 from "./routes/FormPage2";
 import SummaryPage from "./routes/SummaryPage";
@@ -53,7 +53,7 @@ router.history.subscribe(() => {
 });
 
 //render
-createRoot(document.getElementById("root")).render(
+createRoot(document.getElementById("root") as HTMLElement).render(
   <StrictMode>
     <RouterProvider router={router} />
   </StrictMode>

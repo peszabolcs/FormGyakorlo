@@ -2,7 +2,7 @@
 import { z } from "zod";
 import { QueryClient } from "@tanstack/react-query";
 
-export const FORM_QUERY_KEY = ["claim-form"];
+export const FORM_QUERY_KEY: string[] = ["claim-form"];
 export const queryClient = new QueryClient();
 
 export const page1ValidationSchema = z.object({
@@ -14,10 +14,12 @@ export const page1ValidationSchema = z.object({
   phone: z
     .string()
     .regex(
-      /^[+]?\d{10,15}$/,
+      /^[+]?[0-9]{10,15}$/,
       "Adj meg érvényes telefonszámot! (pl. +36301234567)"
     ),
 });
+
+export type Page1FormValues = z.infer<typeof page1ValidationSchema>;
 
 export const page2ValidationSchema = z.object({
   deviceNumber: z
@@ -31,11 +33,12 @@ export const page2ValidationSchema = z.object({
     .string()
     .min(2, "A lakhely legalább 2 karakter legyen!")
     .max(50, "A lakhely legfeljebb 50 karakter lehet!"),
-  password: z
-    .string()
-    .min(6, "A jelszó legalább 6 karakter legyen!")
-    .max(32, "A jelszó legfeljebb 32 karakter lehet!"),
   birthDate: z
     .date({ required_error: "A születési dátum kötelező!" })
-    .refine((d) => d instanceof Date && !isNaN(d), "Adj meg érvényes dátumot!"),
+    .refine(
+      (d) => d instanceof Date && !isNaN(d.getTime()),
+      "Adj meg érvényes dátumot!"
+    ),
 });
+
+export type Page2FormValues = z.infer<typeof page2ValidationSchema>;

@@ -5,18 +5,16 @@ import LanguageDetector from "i18next-browser-languagedetector";
 import translationHU from "./locales/hu/translation.json";
 import translationEN from "./locales/en/translation.json";
 
+const resources = {
+  hu: { translation: translationHU },
+  en: { translation: translationEN },
+} as const;
+
 i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
-    resources: {
-      hu: {
-        translation: translationHU,
-      },
-      en: {
-        translation: translationEN,
-      },
-    },
+    resources,
     fallbackLng: "hu",
     detection: {
       order: ["navigator", "htmlTag", "path", "subdomain"],
