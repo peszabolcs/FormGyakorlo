@@ -18,7 +18,8 @@ import {
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "@tanstack/react-router";
+// import { useNavigate } from "react-router-dom";
 import {
   FORM_QUERY_KEY,
   queryClient,
@@ -28,7 +29,7 @@ import "./App.css";
 
 function FormPage2() {
   const formData = queryClient.getQueryData(FORM_QUERY_KEY) || {};
-  const navigate = useNavigate();
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const formik = useFormik({
     initialValues: {
@@ -41,7 +42,7 @@ function FormPage2() {
     validationSchema: toFormikValidationSchema(page2ValidationSchema),
     onSubmit: (values) => {
       queryClient.setQueryData(FORM_QUERY_KEY, { ...formData, ...values });
-      navigate("/summary");
+      router.navigate({ to: "/summary" });
     },
   });
   return (
@@ -215,7 +216,7 @@ function FormPage2() {
                   ...formData,
                   ...formik.values,
                 });
-                navigate("/");
+                router.navigate({ to: "/" });
               }}
             >
               Vissza

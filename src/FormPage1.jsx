@@ -8,7 +8,8 @@ import {
   InputAdornment,
 } from "@mui/material";
 import { Email, Phone, Numbers, Devices } from "@mui/icons-material";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "@tanstack/react-router";
+// import { useNavigate } from "react-router-dom";
 import {
   FORM_QUERY_KEY,
   queryClient,
@@ -18,7 +19,7 @@ import "./App.css";
 
 function FormPage1() {
   const formData = queryClient.getQueryData(FORM_QUERY_KEY) || {};
-  const navigate = useNavigate();
+  const router = useRouter();
   const formik = useFormik({
     initialValues: {
       name: formData.name || "",
@@ -28,7 +29,7 @@ function FormPage1() {
     validationSchema: toFormikValidationSchema(page1ValidationSchema),
     onSubmit: (values) => {
       queryClient.setQueryData(FORM_QUERY_KEY, { ...formData, ...values });
-      navigate("/step2");
+      router.navigate({ to: "/step2" });
     },
   });
   return (

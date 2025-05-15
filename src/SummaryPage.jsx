@@ -1,15 +1,16 @@
 import { Box, Button, Typography } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { FORM_QUERY_KEY, queryClient } from "./formConfig";
+import { useRouter } from "@tanstack/react-router";
 import "./App.css";
 
 function SummaryPage() {
   const formData = queryClient.getQueryData(FORM_QUERY_KEY) || {};
-  const navigate = useNavigate();
+  const router = useRouter();
   const handleSubmit = () => {
     alert("Kárbejelentés elküldve!\n" + JSON.stringify(formData, null, 2));
     queryClient.removeQueries(FORM_QUERY_KEY);
-    navigate("/");
+    router.navigate({ to: "/" });
   };
   return (
     <Box
@@ -97,7 +98,7 @@ function SummaryPage() {
           color="primary"
           size="large"
           className="fancy-btn"
-          onClick={() => navigate("/step2")}
+          onClick={() => router.navigate({ to: "/step2" })}
         >
           Vissza
         </Button>
