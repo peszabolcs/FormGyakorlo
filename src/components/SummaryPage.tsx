@@ -32,7 +32,7 @@ function SummaryPage() {
         JSON.stringify(formData, null, 2)
     );
     queryClient.removeQueries({ queryKey: FORM_QUERY_KEY });
-    router.navigate({ to: "/" });
+    router.navigate({ to: "/step1" });
   };
   return (
     <Box
