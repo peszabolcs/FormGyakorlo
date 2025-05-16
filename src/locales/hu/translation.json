@@ -5,6 +5,7 @@
     "insuranceNumber": "Biztosítási szám",
     "city": "Lakhely",
     "birthDate": "Születési dátum",
+    "iban": "IBAN",
     "buttons": {
       "back": "Vissza",
       "next": "Tovább",
@@ -26,6 +27,12 @@
       "city": "Lakhely",
       "birthDate": "Születési dátum",
       "successMessage": "Kárbejelentés elküldve!"
+    },
+    "login": {
+      "title": "Bejelentkezés",
+      "username": "Felhasználónév",
+      "password": "Jelszó",
+      "button": "Bejelentkezés"
     }
   },
   "validation": {

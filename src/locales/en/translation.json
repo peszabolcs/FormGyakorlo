@@ -5,6 +5,7 @@
     "insuranceNumber": "Insurance Number",
     "city": "City",
     "birthDate": "Date of Birth",
+    "iban": "IBAN",
     "buttons": {
       "back": "Back",
       "next": "Next",
@@ -15,6 +16,12 @@
       "name": "Name",
       "email": "Email",
       "phone": "Phone Number"
+    },
+    "login": {
+      "title": "Login",
+      "username": "Username",
+      "password": "Password",
+      "button": "Login"
     },
     "summary": {
       "title": "Summary",
