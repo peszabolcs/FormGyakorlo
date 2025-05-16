@@ -16,7 +16,7 @@ function SummaryPage() {
         "\n" +
         JSON.stringify(formData, null, 2)
     );
-    queryClient.removeQueries(FORM_QUERY_KEY);
+    queryClient.removeQueries({ queryKey: FORM_QUERY_KEY });
     router.navigate({ to: "/" });
   };
   return (
