@@ -8,7 +8,7 @@ import LanguageSwitcher from "./components/LanguageSwitcher";
 
 function App() {
   return (
-    <Box className="main-bg" sx={{ minHeight: "100vh", py: 6 }}>
+    <Box className="main-bg" sx={{ minHeight: "100vh" }}>
       <QueryClientProvider client={queryClient}>
         <LanguageSwitcher />
         <RouterProvider router={router} />
