@@ -5,6 +5,7 @@ import App from "./App";
 import FormPage1 from "./routes/FormPage1";
 import FormPage2 from "./routes/FormPage2";
 import SummaryPage from "./routes/SummaryPage";
+import LoginPage from "./routes/LoginPage";
 import {
   RouterProvider,
   createRouter,
@@ -19,9 +20,15 @@ const rootRoute = new RootRoute({
 });
 
 //child routes
+const loginPageRoute = new Route({
+  getParentRoute: () => rootRoute,
+  path: "/login",
+  component: LoginPage,
+});
+
 const formPage1Route = new Route({
   getParentRoute: () => rootRoute,
-  path: "/",
+  path: "/step1",
   component: FormPage1,
 });
 
@@ -39,18 +46,17 @@ const summaryPageRoute = new Route({
 
 //route tree
 const routeTree = rootRoute.addChildren([
+  loginPageRoute,
   formPage1Route,
   formPage2Route,
   summaryPageRoute,
 ]);
 
 //router instance
-const router = createRouter({ routeTree });
+const router = createRouter({ routeTree, defaultPreload: "intent" });
 
-// Register the router
-router.history.subscribe(() => {
-  // This ensures the router is properly initialized
-});
+// Redirect root ("/") to /login
+router.navigate({ to: "/login" });
 
 //render
 createRoot(document.getElementById("root") as HTMLElement).render(

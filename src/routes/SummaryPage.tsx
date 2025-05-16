@@ -7,9 +7,15 @@ import "../App.css";
 
 function SummaryPage() {
   const { t } = useTranslation();
+  const router = useRouter();
+  // Ellenőrizzük, hogy van-e bejelentkezett user
+  const user = queryClient.getQueryData(["user"]);
+  if (!user) {
+    router.navigate({ to: "/login" });
+    return null;
+  }
   const formData =
     (queryClient.getQueryData(FORM_QUERY_KEY) as UserData) || ({} as UserData);
-  const router = useRouter();
   const handleSubmit = () => {
     alert(
       t("form.summary.successMessage") +
