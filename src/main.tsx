@@ -2,10 +2,11 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App";
-import FormPage1 from "./routes/FormPage1";
-import FormPage2 from "./routes/FormPage2";
-import SummaryPage from "./routes/SummaryPage";
-import LoginPage from "./routes/LoginPage";
+import FormPage1 from "./components/FormPage1";
+import FormPage2 from "./components/FormPage2";
+import SummaryPage from "./components/SummaryPage";
+import { LoginPage } from "./components/LoginPage";
+import { ProtectedRoute } from "./components/ProtectedRoute";
 import {
   RouterProvider,
   createRouter,
@@ -29,19 +30,31 @@ const loginPageRoute = new Route({
 const formPage1Route = new Route({
   getParentRoute: () => rootRoute,
   path: "/step1",
-  component: FormPage1,
+  component: () => (
+    <ProtectedRoute>
+      <FormPage1 />
+    </ProtectedRoute>
+  ),
 });
 
 const formPage2Route = new Route({
   getParentRoute: () => rootRoute,
   path: "/step2",
-  component: FormPage2,
+  component: () => (
+    <ProtectedRoute>
+      <FormPage2 />
+    </ProtectedRoute>
+  ),
 });
 
 const summaryPageRoute = new Route({
   getParentRoute: () => rootRoute,
   path: "/summary",
-  component: SummaryPage,
+  component: () => (
+    <ProtectedRoute>
+      <SummaryPage />
+    </ProtectedRoute>
+  ),
 });
 
 //route tree
@@ -61,6 +74,6 @@ router.navigate({ to: "/login" });
 //render
 createRoot(document.getElementById("root") as HTMLElement).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <App />
   </StrictMode>
 );

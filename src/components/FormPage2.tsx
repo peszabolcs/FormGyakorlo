@@ -20,9 +20,11 @@ import { useTranslation } from "react-i18next";
 import {
   FORM_QUERY_KEY,
   queryClient,
-  page2ValidationSchema,
+  validationSchemas,
   UserData,
 } from "../formConfig";
+import { useEffect } from "react";
+import { isSessionValid } from "../utils/sessionManager";
 import "../App.css";
 
 function FormPage2() {
@@ -30,12 +32,17 @@ function FormPage2() {
   const formData =
     (queryClient.getQueryData(FORM_QUERY_KEY) as UserData) || ({} as UserData);
   const router = useRouter();
-  // Ellenőrizzük, hogy van-e bejelentkezett user
-  const user = queryClient.getQueryData(["user"]);
-  if (!user) {
-    router.navigate({ to: "/login" });
+
+  useEffect(() => {
+    if (!isSessionValid()) {
+      router.navigate({ to: "/login" });
+    }
+  }, [router]);
+
+  if (!isSessionValid()) {
     return null;
   }
+
   const formik = useFormik<
     Pick<
       UserData,
@@ -49,7 +56,7 @@ function FormPage2() {
       birthDate: formData.birthDate ? new Date(formData.birthDate) : null,
       iban: formData.iban || "",
     },
-    validationSchema: toFormikValidationSchema(page2ValidationSchema),
+    validationSchema: toFormikValidationSchema(validationSchemas.page2),
     onSubmit: (values) => {
       const newUser: UserData = {
         ...formData,

@@ -1,20 +1,21 @@
 import { Box, Button, Typography } from "@mui/material";
-// import { useNavigate } from "react-router-dom";
 import { FORM_QUERY_KEY, queryClient, UserData } from "../formConfig";
 import { useRouter } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { validateIBAN } from "../utils/ibanValidation";
 import "../App.css";
+import { isSessionValid } from "../utils/sessionManager";
+import { useEffect } from "react";
 
 function SummaryPage() {
   const { t } = useTranslation();
   const router = useRouter();
   // Ellenőrizzük, hogy van-e bejelentkezett user
-  const user = queryClient.getQueryData(["user"]);
-  if (!user) {
-    router.navigate({ to: "/login" });
-    return null;
-  }
+  useEffect(() => {
+    if (!isSessionValid()) {
+      router.navigate({ to: "/login" });
+    }
+  }, [router]);
   const formData =
     (queryClient.getQueryData(FORM_QUERY_KEY) as UserData) || ({} as UserData);
   const handleSubmit = () => {

@@ -13,9 +13,11 @@ import { useTranslation } from "react-i18next";
 import {
   FORM_QUERY_KEY,
   queryClient,
-  page1ValidationSchema,
+  validationSchemas,
   UserData,
 } from "../formConfig";
+import { useEffect } from "react";
+import { isSessionValid } from "../utils/sessionManager";
 import "../App.css";
 
 function FormPage1() {
@@ -24,10 +26,13 @@ function FormPage1() {
     (queryClient.getQueryData(FORM_QUERY_KEY) as UserData) || ({} as UserData);
   const router = useRouter();
 
-  // Ellenőrizzük, hogy van-e bejelentkezett user
-  const user = queryClient.getQueryData(["user"]);
-  if (!user) {
-    router.navigate({ to: "/login" });
+  useEffect(() => {
+    if (!isSessionValid()) {
+      router.navigate({ to: "/login" });
+    }
+  }, [router]);
+
+  if (!isSessionValid()) {
     return null;
   }
 
@@ -37,7 +42,7 @@ function FormPage1() {
       email: formData.email || "",
       phone: formData.phone || "",
     },
-    validationSchema: toFormikValidationSchema(page1ValidationSchema),
+    validationSchema: toFormikValidationSchema(validationSchemas.page1),
     onSubmit: (values) => {
       const newUser: UserData = {
         ...formData,
