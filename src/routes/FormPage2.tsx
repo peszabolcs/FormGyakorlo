@@ -7,7 +7,12 @@ import {
   Typography,
   InputAdornment,
 } from "@mui/material";
-import { LocationCity, Devices, Numbers } from "@mui/icons-material";
+import {
+  LocationCity,
+  Devices,
+  Numbers,
+  AccountBalance,
+} from "@mui/icons-material";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { useRouter } from "@tanstack/react-router";
@@ -32,13 +37,17 @@ function FormPage2() {
     return null;
   }
   const formik = useFormik<
-    Pick<UserData, "deviceNumber" | "insuranceNumber" | "city" | "birthDate">
+    Pick<
+      UserData,
+      "deviceNumber" | "insuranceNumber" | "city" | "birthDate" | "iban"
+    >
   >({
     initialValues: {
       deviceNumber: formData.deviceNumber || "",
       insuranceNumber: formData.insuranceNumber || "",
       city: formData.city || "",
       birthDate: formData.birthDate ? new Date(formData.birthDate) : null,
+      iban: formData.iban || "",
     },
     validationSchema: toFormikValidationSchema(page2ValidationSchema),
     onSubmit: (values) => {
@@ -176,6 +185,27 @@ function FormPage2() {
                 },
                 onBlur: formik.handleBlur,
               },
+            }}
+          />
+          <TextField
+            fullWidth
+            margin="normal"
+            id="iban"
+            name="iban"
+            label={t("form.iban")}
+            variant="outlined"
+            value={formik.values.iban}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.iban && Boolean(formik.errors.iban)}
+            helperText={formik.touched.iban && formik.errors.iban}
+            placeholder="HU12345678901234567890123456"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <AccountBalance />
+                </InputAdornment>
+              ),
             }}
           />
           <Box sx={{ display: "flex", justifyContent: "space-between", mt: 3 }}>

@@ -1,6 +1,7 @@
 // Közös form konfig, query kulcs, validációs sémák, queryClient
 import { z } from "zod";
 import { QueryClient } from "@tanstack/react-query";
+import { validateIBAN } from "./utils/ibanValidation";
 
 export const FORM_QUERY_KEY: string[] = ["claim-form"];
 export const queryClient = new QueryClient();
@@ -39,12 +40,19 @@ export const page2ValidationSchema = z.object({
       (d) => d instanceof Date && !isNaN(d.getTime()),
       "Adj meg érvényes dátumot!"
     ),
+  iban: z
+    .string()
+    .min(1, "Az IBAN szám megadása kötelező")
+    .refine((value) => {
+      const { isValid } = validateIBAN(value);
+      return isValid;
+    }, "Érvénytelen IBAN formátum"),
 });
 
 export type Page2FormValues = z.infer<typeof page2ValidationSchema>;
 
 // UserData interfész, amely tartalmazza a felhasználói adatokat
-export interface UserData {
+export type UserData = {
   name: string;
   email: string;
   phone: string;
@@ -52,4 +60,5 @@ export interface UserData {
   insuranceNumber: string;
   city: string;
   birthDate: Date | null;
-}
+  iban: string;
+};

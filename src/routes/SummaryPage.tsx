@@ -3,6 +3,7 @@ import { Box, Button, Typography } from "@mui/material";
 import { FORM_QUERY_KEY, queryClient, UserData } from "../formConfig";
 import { useRouter } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
+import { validateIBAN } from "../utils/ibanValidation";
 import "../App.css";
 
 function SummaryPage() {
@@ -17,6 +18,13 @@ function SummaryPage() {
   const formData =
     (queryClient.getQueryData(FORM_QUERY_KEY) as UserData) || ({} as UserData);
   const handleSubmit = () => {
+    // Ellenőrizzük az IBAN-t a végleges beküldés előtt
+    const ibanValidation = validateIBAN(formData.iban);
+    if (!ibanValidation.isValid) {
+      alert(ibanValidation.error);
+      return;
+    }
+
     alert(
       t("form.summary.successMessage") +
         "\n" +
@@ -103,6 +111,12 @@ function SummaryPage() {
               ? new Date(formData.birthDate).toLocaleDateString()
               : ""}
           </Typography>
+        </Box>
+        <Box className="summary-row">
+          <Typography component="dt" fontWeight="bold" color="primary.main">
+            {t("form.summary.iban")}:
+          </Typography>
+          <Typography component="dd">{formData.iban}</Typography>
         </Box>
       </Box>
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
