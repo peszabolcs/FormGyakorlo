@@ -4,6 +4,9 @@ import { useMockUser } from "../hooks/useMockUser";
 import { useRouter } from "@tanstack/react-router";
 import { queryClient } from "../formConfig";
 
+//bejelentkezés oldal, ahol a felhasználó bejelentkezhet egy ID megadásával, a megadott ID alapján lekérjük a felhasználó adatait a JSONPlaceholder API-ból
+// és elmentjük a queryClient-be, majd átirányítjuk a felhasználót a következő lépésre
+
 function LoginPage() {
   const [userId, setUserId] = useState(1);
   const [submitted, setSubmitted] = useState(false);

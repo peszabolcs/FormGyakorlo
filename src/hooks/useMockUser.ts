@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
+// useMockUser hook, amely egy felhasználó adatait lekéri a JSONPlaceholder API-ból
 export function useMockUser(userId: number) {
   return useQuery({
     queryKey: ["mock-user", userId],

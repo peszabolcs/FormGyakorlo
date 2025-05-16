@@ -43,6 +43,7 @@ export const page2ValidationSchema = z.object({
 
 export type Page2FormValues = z.infer<typeof page2ValidationSchema>;
 
+// UserData interfész, amely tartalmazza a felhasználói adatokat
 export interface UserData {
   name: string;
   email: string;
