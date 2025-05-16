@@ -42,3 +42,13 @@ export const page2ValidationSchema = z.object({
 });
 
 export type Page2FormValues = z.infer<typeof page2ValidationSchema>;
+
+export interface UserData {
+  name: string;
+  email: string;
+  phone: string;
+  deviceNumber: string;
+  insuranceNumber: string;
+  city: string;
+  birthDate: Date | null;
+}

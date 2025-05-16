@@ -14,19 +14,16 @@ import {
   FORM_QUERY_KEY,
   queryClient,
   page1ValidationSchema,
+  UserData,
 } from "../formConfig";
 import "../App.css";
 
 function FormPage1() {
   const { t } = useTranslation();
   const formData =
-    (queryClient.getQueryData(FORM_QUERY_KEY) as Record<string, any>) || {};
+    (queryClient.getQueryData(FORM_QUERY_KEY) as UserData) || ({} as UserData);
   const router = useRouter();
-  const formik = useFormik<{
-    name: string;
-    email: string;
-    phone: string;
-  }>({
+  const formik = useFormik<Pick<UserData, "name" | "email" | "phone">>({
     initialValues: {
       name: formData.name || "",
       email: formData.email || "",
@@ -34,7 +31,11 @@ function FormPage1() {
     },
     validationSchema: toFormikValidationSchema(page1ValidationSchema),
     onSubmit: (values) => {
-      queryClient.setQueryData(FORM_QUERY_KEY, { ...formData, ...values });
+      const newUser: UserData = {
+        ...formData,
+        ...values,
+      };
+      queryClient.setQueryData(FORM_QUERY_KEY, newUser);
       router.navigate({ to: "/step2" });
     },
   });

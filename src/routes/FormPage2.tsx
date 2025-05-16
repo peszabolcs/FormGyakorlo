@@ -16,20 +16,18 @@ import {
   FORM_QUERY_KEY,
   queryClient,
   page2ValidationSchema,
+  UserData,
 } from "../formConfig";
 import "../App.css";
 
 function FormPage2() {
   const { t } = useTranslation();
   const formData =
-    (queryClient.getQueryData(FORM_QUERY_KEY) as Record<string, any>) || {};
+    (queryClient.getQueryData(FORM_QUERY_KEY) as UserData) || ({} as UserData);
   const router = useRouter();
-  const formik = useFormik<{
-    deviceNumber: string;
-    insuranceNumber: string;
-    city: string;
-    birthDate: Date | null;
-  }>({
+  const formik = useFormik<
+    Pick<UserData, "deviceNumber" | "insuranceNumber" | "city" | "birthDate">
+  >({
     initialValues: {
       deviceNumber: formData.deviceNumber || "",
       insuranceNumber: formData.insuranceNumber || "",
@@ -38,7 +36,11 @@ function FormPage2() {
     },
     validationSchema: toFormikValidationSchema(page2ValidationSchema),
     onSubmit: (values) => {
-      queryClient.setQueryData(FORM_QUERY_KEY, { ...formData, ...values });
+      const newUser: UserData = {
+        ...formData,
+        ...values,
+      };
+      queryClient.setQueryData(FORM_QUERY_KEY, newUser);
       router.navigate({ to: "/summary" });
     },
   });
