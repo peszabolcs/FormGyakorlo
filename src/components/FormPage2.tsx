@@ -22,7 +22,7 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { useRouter } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { validationSchemas, UserData } from "../formConfig";
-import { useCities, useCardTypes } from "../query/mockApi";
+import { useCities, useDamageTypes } from "../query/mockApi";
 import useFormStore from "../store/formStore";
 import { useEffect } from "react";
 import { isSessionValid } from "../utils/sessionManager";
@@ -33,7 +33,8 @@ function FormPage2() {
   const { formData, setStep2Data } = useFormStore();
   const router = useRouter();
   const { data: cities = [], isLoading: citiesLoading } = useCities();
-  const { data: cardTypes = [], isLoading: cardTypesLoading } = useCardTypes();
+  const { data: damageTypes = [], isLoading: damageTypesLoading } =
+    useDamageTypes();
 
   useEffect(() => {
     if (!isSessionValid()) {
@@ -49,7 +50,7 @@ function FormPage2() {
       | "city"
       | "birthDate"
       | "iban"
-      | "cardType"
+      | "damageType"
     >
   >({
     initialValues: {
@@ -60,7 +61,7 @@ function FormPage2() {
         ? new Date(formData.step2.birthDate)
         : null,
       iban: formData.step2?.iban || "",
-      cardType: formData.step2?.cardType || "",
+      damageType: formData.step2?.damageType || "",
     },
     validationSchema: toFormikValidationSchema(validationSchemas.page2),
     onSubmit: (values) => {
@@ -182,33 +183,37 @@ function FormPage2() {
             )}
           </FormControl>
           <FormControl fullWidth margin="normal">
-            <InputLabel id="cardType-label">{t("form.cardType")}</InputLabel>
+            <InputLabel id="damageType-label">
+              {t("form.damageType")}
+            </InputLabel>
             <Select
-              labelId="cardType-label"
-              id="cardType"
-              name="cardType"
-              value={formik.values.cardType}
-              label={t("form.cardType")}
+              labelId="damageType-label"
+              id="damageType"
+              name="damageType"
+              value={formik.values.damageType}
+              label={t("form.damageType")}
               onChange={(e) => {
                 formik.handleChange(e);
-                setStep2Data({ ...formik.values, cardType: e.target.value });
+                setStep2Data({ ...formik.values, damageType: e.target.value });
               }}
               onBlur={formik.handleBlur}
-              error={formik.touched.cardType && Boolean(formik.errors.cardType)}
-              disabled={cardTypesLoading}
+              error={
+                formik.touched.damageType && Boolean(formik.errors.damageType)
+              }
+              disabled={damageTypesLoading}
             >
               <MenuItem value="">
-                <em>{t("form.selectCardType")}</em>
+                <em>{t("form.selectDamageType")}</em>
               </MenuItem>
-              {cardTypes.map((type: any) => (
+              {damageTypes.map((type: any) => (
                 <MenuItem key={type.code} value={type.name}>
                   {type.name}
                 </MenuItem>
               ))}
             </Select>
-            {formik.touched.cardType && formik.errors.cardType && (
+            {formik.touched.damageType && formik.errors.damageType && (
               <Typography color="error" variant="caption">
-                {formik.errors.cardType}
+                {formik.errors.damageType}
               </Typography>
             )}
           </FormControl>

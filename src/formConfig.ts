@@ -49,7 +49,7 @@ export const validationSchemas = {
       .string()
       .min(2, "A lakhely legalább 2 karakter legyen!")
       .max(50, "A lakhely legfeljebb 50 karakter lehet!"),
-    cardType: z.string().min(1, "A kár típusa kötelező!"),
+    damageType: z.string().min(1, "A kár típusa kötelező!"),
     birthDate: z
       .date({ required_error: "A születési dátum kötelező!" })
       .refine(
@@ -79,7 +79,7 @@ export type UserData = {
   imeiNumber: string;
   insuranceNumber: string;
   city: string;
-  cardType: string;
+  damageType: string;
   birthDate: Date | null;
   iban: string;
 };

@@ -4,6 +4,8 @@
     "deviceNumber": "IMEI number",
     "insuranceNumber": "Insurance Number",
     "city": "City",
+    "damageType": "Damage type",
+    "selectDamageType": "Select damage type",
     "birthDate": "Date of Birth",
     "iban": "IBAN",
     "buttons": {

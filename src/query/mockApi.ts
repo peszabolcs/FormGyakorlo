@@ -5,7 +5,6 @@ export const useCities = () => {
   return useQuery({
     queryKey: ["cities"],
     queryFn: async () => {
-      // Mock API response
       await new Promise((res) => setTimeout(res, 500));
       return [
         { code: "BP", name: "Budapest" },
@@ -17,11 +16,10 @@ export const useCities = () => {
   });
 };
 
-export const useCardTypes = () => {
+export const useDamageTypes = () => {
   return useQuery({
-    queryKey: ["cardTypes"],
+    queryKey: ["damageTypes"],
     queryFn: async () => {
-      // Mock API response
       await new Promise((res) => setTimeout(res, 500));
       return [
         { code: "SCREEN", name: "Képernyő törés" },
