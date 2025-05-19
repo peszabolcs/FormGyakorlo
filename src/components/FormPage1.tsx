@@ -32,10 +32,6 @@ function FormPage1() {
     }
   }, [router]);
 
-  if (!isSessionValid()) {
-    return null;
-  }
-
   const formik = useFormik<Pick<UserData, "name" | "email" | "phone">>({
     initialValues: {
       name: formData.name || "",

@@ -15,9 +15,6 @@ export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
     }
   }, [router]);
 
-  if (!isSessionValid()) {
-    return null;
-  }
-
+  // Ne ellenőrizzük újra a render fázisban, csak a useEffect-ben navigáljunk
   return <>{children}</>;
 };

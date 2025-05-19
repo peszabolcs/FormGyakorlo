@@ -39,10 +39,6 @@ function FormPage2() {
     }
   }, [router]);
 
-  if (!isSessionValid()) {
-    return null;
-  }
-
   const formik = useFormik<
     Pick<
       UserData,

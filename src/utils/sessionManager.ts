@@ -21,11 +21,11 @@ export const createSession = (
     user,
     expiresAt,
   };
-  localStorage.setItem(SESSION_KEY, JSON.stringify(sessionData));
+  sessionStorage.setItem(SESSION_KEY, JSON.stringify(sessionData));
 };
 
 export const getSession = (): SessionData | null => {
-  const sessionStr = localStorage.getItem(SESSION_KEY);
+  const sessionStr = sessionStorage.getItem(SESSION_KEY);
   if (!sessionStr) return null;
 
   const session: SessionData = JSON.parse(sessionStr);
@@ -40,7 +40,7 @@ export const getSession = (): SessionData | null => {
 };
 
 export const clearSession = () => {
-  localStorage.removeItem(SESSION_KEY);
+  sessionStorage.removeItem(SESSION_KEY);
 };
 
 export const isSessionValid = (): boolean => {

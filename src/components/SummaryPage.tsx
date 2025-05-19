@@ -12,6 +12,7 @@ function SummaryPage() {
   const { t } = useTranslation();
   const router = useRouter();
   // Ellenőrizzük, hogy van-e bejelentkezett user
+
   useEffect(() => {
     if (!isSessionValid()) {
       router.navigate({ to: "/login" });
