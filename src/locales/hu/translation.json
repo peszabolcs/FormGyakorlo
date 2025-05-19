@@ -4,6 +4,9 @@
     "deviceNumber": "IMEI szám",
     "insuranceNumber": "Biztosítási szám",
     "city": "Lakhely",
+    "cardType": "Kár típusa",
+    "selectCity": "Válassz várost",
+    "selectCardType": "Válassz kár típust",
     "birthDate": "Születési dátum",
     "iban": "IBAN",
     "buttons": {

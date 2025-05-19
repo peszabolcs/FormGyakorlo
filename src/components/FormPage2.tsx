@@ -6,6 +6,10 @@ import {
   TextField,
   Typography,
   InputAdornment,
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel,
 } from "@mui/material";
 import {
   LocationCity,
@@ -18,6 +22,7 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { useRouter } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { validationSchemas, UserData } from "../formConfig";
+import { useCities, useCardTypes } from "../query/mockApi";
 import useFormStore from "../store/formStore";
 import { useEffect } from "react";
 import { isSessionValid } from "../utils/sessionManager";
@@ -27,6 +32,8 @@ function FormPage2() {
   const { t } = useTranslation();
   const { formData, setStep2Data } = useFormStore();
   const router = useRouter();
+  const { data: cities = [], isLoading: citiesLoading } = useCities();
+  const { data: cardTypes = [], isLoading: cardTypesLoading } = useCardTypes();
 
   useEffect(() => {
     if (!isSessionValid()) {
@@ -37,7 +44,12 @@ function FormPage2() {
   const formik = useFormik<
     Pick<
       UserData,
-      "imeiNumber" | "insuranceNumber" | "city" | "birthDate" | "iban"
+      | "imeiNumber"
+      | "insuranceNumber"
+      | "city"
+      | "birthDate"
+      | "iban"
+      | "cardType"
     >
   >({
     initialValues: {
@@ -48,6 +60,7 @@ function FormPage2() {
         ? new Date(formData.step2.birthDate)
         : null,
       iban: formData.step2?.iban || "",
+      cardType: formData.step2?.cardType || "",
     },
     validationSchema: toFormikValidationSchema(validationSchemas.page2),
     onSubmit: (values) => {
@@ -137,26 +150,68 @@ function FormPage2() {
               ),
             }}
           />
-          <TextField
-            fullWidth
-            margin="normal"
-            id="city"
-            name="city"
-            label={t("form.city")}
-            variant="outlined"
-            value={formik.values.city}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.city && Boolean(formik.errors.city)}
-            helperText={formik.touched.city && formik.errors.city}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <LocationCity />
-                </InputAdornment>
-              ),
-            }}
-          />
+          <FormControl fullWidth margin="normal">
+            <InputLabel id="city-label">{t("form.city")}</InputLabel>
+            <Select
+              labelId="city-label"
+              id="city"
+              name="city"
+              value={formik.values.city}
+              label={t("form.city")}
+              onChange={(e) => {
+                formik.handleChange(e);
+                setStep2Data({ ...formik.values, city: e.target.value });
+              }}
+              onBlur={formik.handleBlur}
+              error={formik.touched.city && Boolean(formik.errors.city)}
+              disabled={citiesLoading}
+            >
+              <MenuItem value="">
+                <em>{t("form.selectCity")}</em>
+              </MenuItem>
+              {cities.map((city: any) => (
+                <MenuItem key={city.code} value={city.name}>
+                  {city.name}
+                </MenuItem>
+              ))}
+            </Select>
+            {formik.touched.city && formik.errors.city && (
+              <Typography color="error" variant="caption">
+                {formik.errors.city}
+              </Typography>
+            )}
+          </FormControl>
+          <FormControl fullWidth margin="normal">
+            <InputLabel id="cardType-label">{t("form.cardType")}</InputLabel>
+            <Select
+              labelId="cardType-label"
+              id="cardType"
+              name="cardType"
+              value={formik.values.cardType}
+              label={t("form.cardType")}
+              onChange={(e) => {
+                formik.handleChange(e);
+                setStep2Data({ ...formik.values, cardType: e.target.value });
+              }}
+              onBlur={formik.handleBlur}
+              error={formik.touched.cardType && Boolean(formik.errors.cardType)}
+              disabled={cardTypesLoading}
+            >
+              <MenuItem value="">
+                <em>{t("form.selectCardType")}</em>
+              </MenuItem>
+              {cardTypes.map((type: any) => (
+                <MenuItem key={type.code} value={type.name}>
+                  {type.name}
+                </MenuItem>
+              ))}
+            </Select>
+            {formik.touched.cardType && formik.errors.cardType && (
+              <Typography color="error" variant="caption">
+                {formik.errors.cardType}
+              </Typography>
+            )}
+          </FormControl>
           <DatePicker
             label={t("form.birthDate")}
             value={formik.values.birthDate}
