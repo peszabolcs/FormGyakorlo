@@ -10,20 +10,15 @@ import {
 import { Email, Phone, Numbers, Devices } from "@mui/icons-material";
 import { useRouter } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
-import {
-  FORM_QUERY_KEY,
-  queryClient,
-  validationSchemas,
-  UserData,
-} from "../formConfig";
+import { validationSchemas, UserData } from "../formConfig";
+import useFormStore from "../store/formStore";
 import { useEffect } from "react";
 import { isSessionValid } from "../utils/sessionManager";
 import "../App.css";
 
 function FormPage1() {
   const { t } = useTranslation();
-  const formData =
-    (queryClient.getQueryData(FORM_QUERY_KEY) as UserData) || ({} as UserData);
+  const { formData, setStep1Data } = useFormStore();
   const router = useRouter();
 
   useEffect(() => {
@@ -34,17 +29,13 @@ function FormPage1() {
 
   const formik = useFormik<Pick<UserData, "name" | "email" | "phone">>({
     initialValues: {
-      name: formData.name || "",
-      email: formData.email || "",
-      phone: formData.phone || "",
+      name: formData.step1?.name || "",
+      email: formData.step1?.email || "",
+      phone: formData.step1?.phone || "",
     },
     validationSchema: toFormikValidationSchema(validationSchemas.page1),
     onSubmit: (values) => {
-      const newUser: UserData = {
-        ...formData,
-        ...values,
-      };
-      queryClient.setQueryData(FORM_QUERY_KEY, newUser);
+      setStep1Data(values);
       router.navigate({ to: "/step2" });
     },
   });

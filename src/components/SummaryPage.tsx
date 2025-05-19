@@ -1,5 +1,6 @@
 import { Box, Button, Typography } from "@mui/material";
-import { FORM_QUERY_KEY, queryClient, UserData } from "../formConfig";
+import { UserData } from "../formConfig";
+import useFormStore from "../store/formStore";
 import { useRouter } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { validateIBAN } from "../utils/ibanValidation";
@@ -18,11 +19,12 @@ function SummaryPage() {
       router.navigate({ to: "/login" });
     }
   }, [router]);
-  const formData =
-    (queryClient.getQueryData(FORM_QUERY_KEY) as UserData) || ({} as UserData);
+  const { formData, resetForm } = useFormStore();
   const handleSubmit = async () => {
+    // Az összes adatot egyesítjük (step1 + step2)
+    const allData = { ...formData.step1, ...formData.step2 } as UserData;
     // Ellenőrizzük az IBAN-t a végleges beküldés előtt
-    const ibanValidation = validateIBAN(formData.iban);
+    const ibanValidation = validateIBAN(allData.iban);
     if (!ibanValidation.isValid) {
       alert(ibanValidation.error);
       return;
@@ -30,9 +32,9 @@ function SummaryPage() {
 
     // birthDate-t formázzuk ISO helyett magyar vagy angol formátumra
     const formattedData = {
-      ...formData,
-      birthDate: formData.birthDate
-        ? new Date(formData.birthDate).toLocaleDateString(
+      ...allData,
+      birthDate: allData.birthDate
+        ? new Date(allData.birthDate).toLocaleDateString(
             navigator.language === "en" ? "en-GB" : "hu-HU"
           )
         : "",
@@ -57,7 +59,7 @@ function SummaryPage() {
       );
     }
 
-    queryClient.removeQueries({ queryKey: FORM_QUERY_KEY });
+    resetForm();
     router.navigate({ to: "/step1" });
   };
   return (
@@ -97,45 +99,47 @@ function SummaryPage() {
           <Typography component="dt" fontWeight="bold" color="primary.main">
             {t("form.summary.name")}:
           </Typography>
-          <Typography component="dd">{formData.name}</Typography>
+          <Typography component="dd">{formData.step1?.name}</Typography>
         </Box>
         <Box className="summary-row">
           <Typography component="dt" fontWeight="bold" color="primary.main">
             {t("form.summary.email")}:
           </Typography>
-          <Typography component="dd">{formData.email}</Typography>
+          <Typography component="dd">{formData.step1?.email}</Typography>
         </Box>
         <Box className="summary-row">
           <Typography component="dt" fontWeight="bold" color="primary.main">
             {t("form.summary.phone")}:
           </Typography>
-          <Typography component="dd">{formData.phone}</Typography>
+          <Typography component="dd">{formData.step1?.phone}</Typography>
         </Box>
         <Box className="summary-row">
           <Typography component="dt" fontWeight="bold" color="primary.main">
             {t("form.summary.imeiNumber")}:
           </Typography>
-          <Typography component="dd">{formData.imeiNumber}</Typography>
+          <Typography component="dd">{formData.step2?.imeiNumber}</Typography>
         </Box>
         <Box className="summary-row">
           <Typography component="dt" fontWeight="bold" color="primary.main">
             {t("form.summary.insuranceNumber")}:
           </Typography>
-          <Typography component="dd">{formData.insuranceNumber}</Typography>
+          <Typography component="dd">
+            {formData.step2?.insuranceNumber}
+          </Typography>
         </Box>
         <Box className="summary-row">
           <Typography component="dt" fontWeight="bold" color="primary.main">
             {t("form.summary.city")}:
           </Typography>
-          <Typography component="dd">{formData.city}</Typography>
+          <Typography component="dd">{formData.step2?.city}</Typography>
         </Box>
         <Box className="summary-row">
           <Typography component="dt" fontWeight="bold" color="primary.main">
             {t("form.summary.birthDate")}:
           </Typography>
           <Typography component="dd">
-            {formData.birthDate
-              ? new Date(formData.birthDate).toLocaleDateString()
+            {formData.step2?.birthDate
+              ? new Date(formData.step2.birthDate).toLocaleDateString()
               : ""}
           </Typography>
         </Box>
@@ -143,7 +147,7 @@ function SummaryPage() {
           <Typography component="dt" fontWeight="bold" color="primary.main">
             {t("form.summary.iban")}:
           </Typography>
-          <Typography component="dd">{formData.iban}</Typography>
+          <Typography component="dd">{formData.step2?.iban}</Typography>
         </Box>
       </Box>
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>

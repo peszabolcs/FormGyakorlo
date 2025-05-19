@@ -17,20 +17,15 @@ import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { useRouter } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
-import {
-  FORM_QUERY_KEY,
-  queryClient,
-  validationSchemas,
-  UserData,
-} from "../formConfig";
+import { validationSchemas, UserData } from "../formConfig";
+import useFormStore from "../store/formStore";
 import { useEffect } from "react";
 import { isSessionValid } from "../utils/sessionManager";
 import "../App.css";
 
 function FormPage2() {
   const { t } = useTranslation();
-  const formData =
-    (queryClient.getQueryData(FORM_QUERY_KEY) as UserData) || ({} as UserData);
+  const { formData, setStep2Data } = useFormStore();
   const router = useRouter();
 
   useEffect(() => {
@@ -46,19 +41,17 @@ function FormPage2() {
     >
   >({
     initialValues: {
-      imeiNumber: formData.imeiNumber || "",
-      insuranceNumber: formData.insuranceNumber || "",
-      city: formData.city || "",
-      birthDate: formData.birthDate ? new Date(formData.birthDate) : null,
-      iban: formData.iban || "",
+      imeiNumber: formData.step2?.imeiNumber || "",
+      insuranceNumber: formData.step2?.insuranceNumber || "",
+      city: formData.step2?.city || "",
+      birthDate: formData.step2?.birthDate
+        ? new Date(formData.step2.birthDate)
+        : null,
+      iban: formData.step2?.iban || "",
     },
     validationSchema: toFormikValidationSchema(validationSchemas.page2),
     onSubmit: (values) => {
-      const newUser: UserData = {
-        ...formData,
-        ...values,
-      };
-      queryClient.setQueryData(FORM_QUERY_KEY, newUser);
+      setStep2Data(values);
       router.navigate({ to: "/summary" });
     },
   });
@@ -215,13 +208,7 @@ function FormPage2() {
               color="primary"
               size="large"
               className="fancy-btn"
-              onClick={() => {
-                queryClient.setQueryData(FORM_QUERY_KEY, {
-                  ...formData,
-                  ...formik.values,
-                });
-                router.navigate({ to: "/" });
-              }}
+              onClick={() => router.navigate({ to: "/step1" })}
             >
               {t("form.buttons.back")}
             </Button>
