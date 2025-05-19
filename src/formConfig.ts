@@ -1,11 +1,9 @@
 // Közös form konfig, query kulcs, validációs sémák, queryClient
 import { z } from "zod";
-import { QueryClient } from "@tanstack/react-query";
 import { validateIBAN } from "./utils/ibanValidation";
 import { validateIMEI } from "./utils/validateIMEI";
 
 export const FORM_QUERY_KEY: string[] = ["claim-form"];
-export const queryClient = new QueryClient();
 
 // Validációs sémák
 export const validationSchemas = {
