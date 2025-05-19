@@ -3,6 +3,7 @@ import { FORM_QUERY_KEY, queryClient, UserData } from "../formConfig";
 import { useRouter } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { validateIBAN } from "../utils/ibanValidation";
+import axios from "../lib/axios";
 import "../App.css";
 import { isSessionValid } from "../utils/sessionManager";
 import { useEffect } from "react";
@@ -18,7 +19,7 @@ function SummaryPage() {
   }, [router]);
   const formData =
     (queryClient.getQueryData(FORM_QUERY_KEY) as UserData) || ({} as UserData);
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     // Ellenőrizzük az IBAN-t a végleges beküldés előtt
     const ibanValidation = validateIBAN(formData.iban);
     if (!ibanValidation.isValid) {
@@ -35,11 +36,26 @@ function SummaryPage() {
           )
         : "",
     };
-    alert(
-      t("form.summary.successMessage") +
-        "\n" +
-        JSON.stringify(formattedData, null, 2)
-    );
+
+    // Axios GET példa: lekérünk egy publikus user-t
+    try {
+      const response = await axios.get(
+        "https://jsonplaceholder.typicode.com/users/1"
+      );
+      alert(
+        t("form.summary.successMessage") +
+          "\n" +
+          JSON.stringify(formattedData, null, 2) +
+          "\n---\n" +
+          "Publikus user (Axios GET):\n" +
+          JSON.stringify(response.data, null, 2)
+      );
+    } catch (err) {
+      alert(
+        "Axios GET hiba: " + (err instanceof Error ? err.message : String(err))
+      );
+    }
+
     queryClient.removeQueries({ queryKey: FORM_QUERY_KEY });
     router.navigate({ to: "/step1" });
   };
