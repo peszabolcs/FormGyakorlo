@@ -26,10 +26,19 @@ function SummaryPage() {
       return;
     }
 
+    // birthDate-t formázzuk ISO helyett magyar vagy angol formátumra
+    const formattedData = {
+      ...formData,
+      birthDate: formData.birthDate
+        ? new Date(formData.birthDate).toLocaleDateString(
+            navigator.language === "en" ? "en-GB" : "hu-HU"
+          )
+        : "",
+    };
     alert(
       t("form.summary.successMessage") +
         "\n" +
-        JSON.stringify(formData, null, 2)
+        JSON.stringify(formattedData, null, 2)
     );
     queryClient.removeQueries({ queryKey: FORM_QUERY_KEY });
     router.navigate({ to: "/step1" });
@@ -87,9 +96,9 @@ function SummaryPage() {
         </Box>
         <Box className="summary-row">
           <Typography component="dt" fontWeight="bold" color="primary.main">
-            {t("form.summary.deviceNumber")}:
+            {t("form.summary.imeiNumber")}:
           </Typography>
-          <Typography component="dd">{formData.deviceNumber}</Typography>
+          <Typography component="dd">{formData.imeiNumber}</Typography>
         </Box>
         <Box className="summary-row">
           <Typography component="dt" fontWeight="bold" color="primary.main">

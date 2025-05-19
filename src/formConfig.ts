@@ -2,6 +2,7 @@
 import { z } from "zod";
 import { QueryClient } from "@tanstack/react-query";
 import { validateIBAN } from "./utils/ibanValidation";
+import { validateIMEI } from "./utils/validateIMEI";
 
 export const FORM_QUERY_KEY: string[] = ["claim-form"];
 export const queryClient = new QueryClient();
@@ -37,10 +38,12 @@ export const validationSchemas = {
 
   // Második oldal validáció
   page2: z.object({
-    deviceNumber: z
+    imeiNumber: z
       .string()
-      .min(5, "Az eszközszám legalább 5 karakter legyen!")
-      .max(20, "Az eszközszám legfeljebb 20 karakter lehet!"),
+      .regex(/^\d{15}$/, "Az IMEI szám pontosan 15 számjegyből álljon!")
+      .refine((value) => validateIMEI(value), {
+        message: "Érvénytelen IMEI szám (Luhn-ellenőrzés sikertelen)",
+      }),
     insuranceNumber: z
       .string()
       .regex(/^[0-9]{8,12}$/, "A biztosítási szám 8-12 számjegy legyen!"),
@@ -74,7 +77,7 @@ export type UserData = {
   name: string;
   email: string;
   phone: string;
-  deviceNumber: string;
+  imeiNumber: string;
   insuranceNumber: string;
   city: string;
   birthDate: Date | null;

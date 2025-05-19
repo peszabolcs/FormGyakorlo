@@ -46,11 +46,11 @@ function FormPage2() {
   const formik = useFormik<
     Pick<
       UserData,
-      "deviceNumber" | "insuranceNumber" | "city" | "birthDate" | "iban"
+      "imeiNumber" | "insuranceNumber" | "city" | "birthDate" | "iban"
     >
   >({
     initialValues: {
-      deviceNumber: formData.deviceNumber || "",
+      imeiNumber: formData.imeiNumber || "",
       insuranceNumber: formData.insuranceNumber || "",
       city: formData.city || "",
       birthDate: formData.birthDate ? new Date(formData.birthDate) : null,
@@ -104,19 +104,17 @@ function FormPage2() {
           <TextField
             fullWidth
             margin="normal"
-            id="deviceNumber"
-            name="deviceNumber"
+            id="imeiNumber"
+            name="imeiNumber"
             label={t("form.deviceNumber")}
             variant="outlined"
-            value={formik.values.deviceNumber}
+            value={formik.values.imeiNumber}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             error={
-              formik.touched.deviceNumber && Boolean(formik.errors.deviceNumber)
+              formik.touched.imeiNumber && Boolean(formik.errors.imeiNumber)
             }
-            helperText={
-              formik.touched.deviceNumber && formik.errors.deviceNumber
-            }
+            helperText={formik.touched.imeiNumber && formik.errors.imeiNumber}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">

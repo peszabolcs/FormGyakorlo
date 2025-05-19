@@ -1,7 +1,7 @@
 {
   "form": {
     "title": "Claim Details",
-    "deviceNumber": "Device Number",
+    "deviceNumber": "IMEI number",
     "insuranceNumber": "Insurance Number",
     "city": "City",
     "birthDate": "Date of Birth",
@@ -28,10 +28,11 @@
       "name": "Name",
       "email": "Email",
       "phone": "Phone Number",
-      "deviceNumber": "Device Number",
+      "imeiNumber": "IMEI number",
       "insuranceNumber": "Insurance Number",
       "city": "City",
       "birthDate": "Date of Birth",
+      "iban": "IBAN account number",
       "successMessage": "Claim submitted successfully!"
     }
   },

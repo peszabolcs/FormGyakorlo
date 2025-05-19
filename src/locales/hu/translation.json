@@ -1,7 +1,7 @@
 {
   "form": {
     "title": "Kár részletei",
-    "deviceNumber": "Eszközszám",
+    "deviceNumber": "IMEI szám",
     "insuranceNumber": "Biztosítási szám",
     "city": "Lakhely",
     "birthDate": "Születési dátum",
@@ -22,10 +22,11 @@
       "name": "Név",
       "email": "Email",
       "phone": "Telefonszám",
-      "deviceNumber": "Eszközszám",
+      "imeiNumber": "IMEI szám",
       "insuranceNumber": "Biztosítási szám",
       "city": "Lakhely",
       "birthDate": "Születési dátum",
+      "iban": "IBAN számlaszám",
       "successMessage": "Kárbejelentés elküldve!"
     },
     "login": {
