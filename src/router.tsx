@@ -3,12 +3,14 @@ import {
   createRouter,
   Outlet,
   createRoute,
+  redirect,
 } from "@tanstack/react-router";
 import { LoginPage } from "./components/LoginPage";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import FormPage1 from "./components/FormPage1";
 import FormPage2 from "./components/FormPage2";
 import SummaryPage from "./components/SummaryPage";
+import { isSessionValid } from "./utils/sessionManager";
 
 const rootRoute = createRootRoute({
   component: () => <Outlet />,
@@ -50,7 +52,28 @@ const summaryPageRoute = createRoute({
   ),
 });
 
+// Index route to handle the root path
+const indexRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/",
+  beforeLoad: () => {
+    // Check if user is authenticated
+    if (isSessionValid()) {
+      // If authenticated, redirect to step1
+      throw redirect({
+        to: "/step1",
+      });
+    } else {
+      // If not authenticated, redirect to login
+      throw redirect({
+        to: "/login",
+      });
+    }
+  },
+});
+
 const routeTree = rootRoute.addChildren([
+  indexRoute,
   loginRoute,
   formPage1Route,
   formPage2Route,
