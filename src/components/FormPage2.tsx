@@ -10,6 +10,9 @@ import {
   Select,
   FormControl,
   InputLabel,
+  CircularProgress,
+  Alert,
+  Snackbar,
 } from "@mui/material";
 import {
   LocationCity,
@@ -22,9 +25,9 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { useRouter } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { validationSchemas, UserData } from "../formConfig";
-import { useCities, useDamageTypes } from "../query/mockApi";
+import { useParallelQueries, DataItem } from "../query/mockApi";
 import useFormStore from "../store/formStore";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { isSessionValid } from "../utils/sessionManager";
 import "../App.css";
 
@@ -32,15 +35,34 @@ function FormPage2() {
   const { t } = useTranslation();
   const { formData, setStep2Data } = useFormStore();
   const router = useRouter();
-  const { data: cities = [], isLoading: citiesLoading } = useCities();
-  const { data: damageTypes = [], isLoading: damageTypesLoading } =
-    useDamageTypes();
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  // Use the parallel queries hook with 4 parallel queries (can be between 2-5)
+  const {
+    cities = [],
+    damageTypes = [],
+    phoneBrands = [],
+    insuranceTypes = [],
+    status,
+  } = useParallelQueries(4);
+  const { isLoading, isError, isSuccess, errorMessage } = status;
 
   useEffect(() => {
     if (!isSessionValid()) {
       router.navigate({ to: "/login" });
     }
   }, [router]);
+
+  // Effect to handle the success status of all API requests
+  useEffect(() => {
+    if (isSuccess) {
+      setShowSuccessMessage(true);
+      // Hide success message after 3 seconds
+      const timer = setTimeout(() => {
+        setShowSuccessMessage(false);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [isSuccess]);
 
   const formik = useFormik<
     Pick<
@@ -83,6 +105,44 @@ function FormPage2() {
         position: "relative",
       }}
     >
+      {" "}
+      {/* Success message notification */}
+      <Snackbar
+        open={showSuccessMessage}
+        autoHideDuration={3000}
+        onClose={() => setShowSuccessMessage(false)}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert severity="success" sx={{ width: "100%" }}>
+          All API requests completed successfully (200 OK)
+        </Alert>
+      </Snackbar>
+      {/* Error message notification */}
+      <Snackbar
+        open={isError}
+        autoHideDuration={6000}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert severity="error" sx={{ width: "100%" }}>
+          {errorMessage || "An error occurred while fetching data"}
+        </Alert>
+      </Snackbar>
+      {/* Global loading indicator */}
+      {isLoading && (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            position: "absolute",
+            top: "10px",
+            right: "10px",
+            zIndex: 1000,
+          }}
+        >
+          <CircularProgress size={24} color="primary" />
+        </Box>
+      )}
       <Box
         className="card-header"
         sx={{
@@ -165,12 +225,19 @@ function FormPage2() {
               }}
               onBlur={formik.handleBlur}
               error={formik.touched.city && Boolean(formik.errors.city)}
-              disabled={citiesLoading}
+              disabled={isLoading}
+              endAdornment={
+                isLoading ? (
+                  <InputAdornment position="end">
+                    <CircularProgress size={20} />
+                  </InputAdornment>
+                ) : null
+              }
             >
               <MenuItem value="">
                 <em>{t("form.selectCity")}</em>
-              </MenuItem>
-              {cities.map((city: any) => (
+              </MenuItem>{" "}
+              {cities.map((city: DataItem) => (
                 <MenuItem key={city.code} value={city.name}>
                   {city.name}
                 </MenuItem>
@@ -200,12 +267,19 @@ function FormPage2() {
               error={
                 formik.touched.damageType && Boolean(formik.errors.damageType)
               }
-              disabled={damageTypesLoading}
+              disabled={isLoading}
+              endAdornment={
+                isLoading ? (
+                  <InputAdornment position="end">
+                    <CircularProgress size={20} />
+                  </InputAdornment>
+                ) : null
+              }
             >
               <MenuItem value="">
                 <em>{t("form.selectDamageType")}</em>
-              </MenuItem>
-              {damageTypes.map((type: any) => (
+              </MenuItem>{" "}
+              {damageTypes.map((type: DataItem) => (
                 <MenuItem key={type.code} value={type.name}>
                   {type.name}
                 </MenuItem>
@@ -261,7 +335,49 @@ function FormPage2() {
                 </InputAdornment>
               ),
             }}
-          />
+          />{" "}
+          {/* Additional data from parallel queries (for demonstration) */}
+          <Box
+            sx={{
+              mt: 3,
+              mb: 2,
+              p: 2,
+              border: "1px dashed #ccc",
+              borderRadius: 2,
+            }}
+          >
+            <Typography variant="subtitle2" fontWeight="bold" mb={1}>
+              Additional data loaded in parallel:
+            </Typography>
+
+            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
+              {" "}
+              {phoneBrands.length > 0 && (
+                <Box sx={{ flex: "1 1 45%" }}>
+                  <Typography variant="caption" color="primary">
+                    Phone Brands:
+                  </Typography>
+                  <Typography variant="body2">
+                    {phoneBrands
+                      .map((brand: DataItem) => brand.name)
+                      .join(", ")}
+                  </Typography>
+                </Box>
+              )}
+              {insuranceTypes.length > 0 && (
+                <Box sx={{ flex: "1 1 45%" }}>
+                  <Typography variant="caption" color="primary">
+                    Insurance Types:
+                  </Typography>
+                  <Typography variant="body2">
+                    {insuranceTypes
+                      .map((type: DataItem) => type.name)
+                      .join(", ")}
+                  </Typography>
+                </Box>
+              )}
+            </Box>
+          </Box>
           <Box sx={{ display: "flex", justifyContent: "space-between", mt: 3 }}>
             <Button
               variant="outlined"
